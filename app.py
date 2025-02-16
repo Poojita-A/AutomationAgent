@@ -8,6 +8,7 @@ import sqlite3
 from bs4 import BeautifulSoup
 import requests
 import markdown2
+from datetime import datetime
 
 
 app = Flask(__name__)
@@ -51,6 +52,22 @@ if __name__ == "__main__":
 def validate_file_path(file_path):
     if not file_path.startswith("/data/"):
         raise ValueError("Access outside /data directory is prohibited.")
+
+
+def execute_a3():
+    # Read the list of dates from /data/dates.txt
+    dates_file_path = "/data/dates.txt"
+    with open(dates_file_path, 'r') as f:
+        dates = f.readlines()
+
+    # Count Wednesdays
+    wednesdays_count = sum(1 for date_str in dates if datetime.strptime(date_str.strip(), "%Y-%m-%d").weekday() == 2)
+
+    # Write the result to /data/dates-wednesdays.txt
+    with open("/data/dates-wednesdays.txt", 'w') as f:
+        f.write(str(wednesdays_count))
+
+    return f"Count of Wednesdays: {wednesdays_count} written to /data/dates-wednesdays.txt"
 
 #B3: Fetch data from an API and save it:
 def execute_b3():
