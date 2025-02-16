@@ -13,10 +13,8 @@ from datetime import datetime
 
 app = Flask(__name__)
 
-API_KEY = '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'
-
 # Configure OpenAI API Key
-openai.api_key = API_KEY
+openai.api_key = os.environ.get("AIPROXY_TOKEN")
 
 @app.route('/run', methods=['POST'])
 def run_task():
